@@ -1,0 +1,615 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Settings</title>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.spin.js"></script>
+<script type="text/javascript" src="js/jquery.selectbox.js"></script>
+<script type="text/javascript" src="js/jquery.slider.js"></script>
+<script type="text/javascript" src="js/jquery.mycolorpicker.js"></script>
+<script type="text/javascript" src="js/jquery.collapsibleCheckboxTree.js"></script>
+<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
+<link rel="stylesheet" href="css/jquery.collapsibleCheckboxTree.css" type="text/css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.selectbox.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.slider.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.spin.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.mycolorpicker.css" />
+
+<script type="text/javascript">
+$(document).ready(
+function()
+{		
+		$('#light_type').change(function () {
+			$('#list div').hide();
+			$('#' + this.value).show();
+			$('#' + this.value+' div').show();
+			//alert('#'+this.value);
+		});
+		
+		$('#caustic_type').change(function() {
+		if (this.value=='photon'||this.value=='both')
+			{
+			$('#photon').show();
+			}
+		else 
+			{
+			$('#photon').hide();
+			}
+		});
+
+		$('ul#example').collapsibleCheckboxTree();
+		$("select,:text").change(function() {
+			if (this.id=="aa_passes") {
+				if (this.value>1) {
+					$("#aa_threshold").closest("div.columns").show();
+					}
+				else
+					{
+					$("#aa_threshold").closest("div.columns").hide();
+				}
+			}
+			
+			if (this.id=="aa_passes"&&this.value>1) {
+				$("#aa_threshold").closest("div.columns").show();
+			}
+			window.location = 'skp:param_generate@' + this.id+'='+this.value;
+		});
+		
+		$(":checkbox").click(function() {
+			window.location = 'skp:param_generate@' + this.id + '=' + $(this).attr('checked');
+		});
+		
+		$.spin.imageBasePath = 'img/spin/';
+		
+		$('#aa_passes').spin({min:1,max:100});
+		$('#aa_threshold').spin({min:0,max:1,interval:0.001});
+		$('#aa_inc_samples').spin({min:1,max:64});
+		
+		$('#aa_samples').spin({min:1,max:1024}); 
+		$('#raydepth').spin({min:1,max:1024}); 
+		$('#aa_pixelwidth').spin({min:1,max:1024,interval:0.1}); 
+		$('#width').spin({min:100}); 
+		$('#height').spin({min:100});
+		$('#shadowDepth').spin({min:1,max:64});
+		$('#threads').spin({min:1});
+		
+		//$('#gamma').spin({min:0,max:5,interval:0.01});
+		$('#gamma').slider({min:1,max:5,interval:0.1});
+		
+		
+		//$('#gamma_input').spin({min:0,max:5,interval:0.01});		
+		$('#gamma_input').slider({min:1,max:5,interval:0.1});		
+		$('#filter_type').selectbox();
+		//pathtracing
+		$('#photons').spin();
+		$('#caustic_mix').spin();
+		$('#caustic_depth').spin();
+		$('#caustic_radius').spin();
+		$('#bounces').spin();
+		$('#path_samples').spin();
+		//pm
+		$('#fg_samples').spin();
+		$('#fg_bounces').spin({min:1,max:20});
+		$('#pm_bounces').spin({min:1,max:50});
+		$('#pm_photons').spin({min:1});
+		$('#cPhotons').spin();
+		$('#diffuseRadius').spin({min:0,max:100,interval:0.01});
+		$('#causticRadius').spin({min:0,max:100,interval:0.01});
+		$('#search').spin({min:1,max:10000});
+		$('#pm_caustic_mix').spin({min:1,max:10000});
+		
+		$('#bg_color').mycolorpicker();
+		
+		
+$("input:checkbox").parent("div").addClass("checkboxOff");
+
+setCheckboxOnOff=function($this){
+if ($this.attr('checked'))
+		{
+			if ($this.is('#auto_threads'))
+			{
+			$('#threads').closest("div").hide();
+			}
+			if ($this.is('#transpShad'))
+			{
+				$('#shadowDepth').closest("div").show();
+			}
+			$this.closest("div").removeClass("checkboxOff");
+			$this.closest("div").addClass("checkboxOn");
+			$this.next("label").css('color','#FFFFFF');
+		}
+		else 
+		{	
+			if ($this.is('#transpShad'))
+			{
+				$('#shadowDepth').closest("div").hide();
+			}
+			if ($this.is('#auto_threads'))
+			{
+				$('#threads').closest("div").show();	
+			}
+			$this.closest("div").removeClass("checkboxOn");
+			$this.closest("div").addClass("checkboxOff");
+			$this.next("label").css('color','#000000');
+		}
+}
+
+$(":checkbox").click(function(){setCheckboxOnOff($(this));});
+$(":checkbox").change(function(){setCheckboxOnOff($(this));});
+
+$(".columns").each(function (i) {
+var colWrap = $(this).width();
+var childrens=$(this).children();
+var colSize=childrens.length;
+var colWidth=Math.floor(100/colSize);
+	childrens.each(function (index) {
+		$(this).css('width',colWidth+"%");
+		$(this).css('padding',0);
+		$(this).css('margin',0);
+	});
+});
+});
+</script>
+
+<style type="text/css">
+
+@font-face {
+ font-family: Bitstream;
+ src: url("font/bfont.eot") /* EOT file for IE */
+}
+
+@font-face {
+ font-family: MyCustomFont;
+ src: url("font/bfont.ttf") /* TTF file for CSS3 browsers */
+}
+
+
+body {
+overflow: hidden;
+font-family: Bitstream, Verdana, Arial, Helvetica, sans-serif;
+background: #727272;
+font-size:11px;
+}
+
+/*select box*/
+
+.fill-input{
+background:url('img/selectbox_fill.png') 0 0 repeat-x;
+width:100%;
+border:none;
+padding:4px 0;
+}
+
+.left-input{
+background:url('img/selectbox_left.png') left top no-repeat;
+width:100%;
+display:block;
+}
+.right-input{
+background:url('img/selectbox_right.png') right top no-repeat;
+padding: 0 14px 0 4px;
+cursor:pointer;
+}
+
+.right-input input{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+line-height:normal;
+color:#A7ADB6;
+padding:0 0 0 10px;
+border:none;
+width:95%;
+height:16px;
+background:none;
+}
+
+.selectbox-currentItem {
+	//padding: 3px 0px 0px 3px;
+	white-space: nowrap;
+	display: block;
+	overflow: hidden;
+	color:#FFF;
+}
+
+/*end selectbox*/
+
+
+
+
+
+#wrapper{
+width: 100%;
+padding: 3px;
+}
+
+select, input {
+vertical-align:middle;
+font-family:Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+font-size:1.1em;
+color:#fdfdfd;
+background:#444444;
+}
+
+select {
+width:90%;
+}
+
+input:focus {
+outline: none;
+}
+
+input[type=checkbox] {
+margin:0;padding:0;
+opacity:0;
+filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+float:left;
+}
+.checkboxOn {
+background:url(img/f_logincheckbox_on.png) no-repeat 0 2px;
+
+}
+.checkboxOff {
+background:url(img/f_logincheckbox_off.png) no-repeat 0 2px;
+
+}
+
+.columns>div{
+	float:left;
+	display: inline;
+}
+
+.columns {
+height:30px;
+}
+
+label {
+	padding: 5px 0 0px 5px;
+	float:left;
+}
+
+input[type="text"] {
+//border:none;
+//padding:2px 0px 3px 0px;
+text-align: center;
+//width:100%;
+//float:left;
+}
+
+#slider {
+width:100%;
+height:21px;
+display:block;
+}
+
+
+
+#fill{
+background: url("img/slider_fill.png") repeat-x scroll 0 0 transparent;
+width:100%;
+display:block;
+float:left;
+}
+
+#gray {
+background: url("img/gradient_gray_off.png") repeat-x scroll 0pt 0pt transparent;
+position:relative;
+width:50%;
+margin-right:-50%;
+height:21px;
+float:left;
+left:0;
+margin-left:9px;
+}
+
+#white {
+background: url("img/gradient_white_off.png") repeat-x scroll 0pt 0pt transparent;
+height:18px;
+position:relative;
+width:50%;
+margin-right:-50%;
+float:left;
+left:50%;
+z-index:-1;
+}
+
+#phh{
+margin:-5px 0;
+padding:10px 0;
+//background:#a67c56;
+//background:rgba(166, 124, 86, 0.7);
+position:relative;			
+left:0%;
+margin-right:-100%;
+text-align:center;
+width:200%;
+}
+</style>
+
+</head>
+<body>
+<ul id="example">
+	<li>&nbsp General settings
+		<ul>		
+		<div class="columns">
+	<div><label title='Ray depth' for="raydepth">Ray depth:</label>
+				<input  type='text' id="raydepth"/></div>
+	<div><input type='checkbox' id="transpShad"/><label title='transpShad' for="transpShad">Transparent shadow</label></div>
+	</div>
+	
+	<div class="columns">
+	<div><input type='checkbox' id="clay_render"/><label title='' for="clay_render">Clay render</label></div>
+	<div><label title='Shadow Depth' for="shadowDepth">Shadow depth:</label>
+				<input  type='text' id="shadowDepth"/></div>
+	</div>
+
+	<div class="columns">
+	<div><input type='checkbox' id="auto_threads"/><label title='' for="auto_threads">Auto-threads</label></div>
+	<div><input type='checkbox' id="z_channel"/><label title='' for="z_channel">Render Z-buffer</label></div>
+	</div>
+	
+	<div class="columns">
+		<div><label title='threads' for="threads">Threads:</label>
+				<input  type='text' id="threads"/></div>
+		<div></div>
+	</div>
+		</ul>
+    </li>
+	<li>&nbsp AA settings
+	    <ul>
+		<div class="columns">
+		<div><label title='Number anti-aliasing passes' for="aa_passes">AA passes:</label>
+				<input  type='text' id="aa_passes"/></div>
+		<div><label title='Maximum path tracing depth' for="aa_samples">AA samples:</label>
+				<input  type='text' id="aa_samples"/></div>
+		</div>
+		
+<!--		<div class="columns">
+			<div><label for="filter_type">Filter type:</label>	
+				<select id="filter_type">
+					<option value="0">mitchell</option>
+					<option value="1">lanczoc</option>
+					<option value="2">mitchell</option>
+					<option value="3">box</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="columns">
+			<div><label for="filter_type">Filter type:</label>
+			</div>
+		</div>
+	-->	
+		<div class="columns">
+		<div><label title='AA Threshold' for="aa_threshold">AA Threshold:</label>
+			<input  type='text' id="aa_threshold"/></div>
+		<div><label title='AA inc. samples' for="aa_inc_samples">AA inc. samples:</label>
+			<input  type='text' id="aa_inc_samples"/></div>
+		</div>
+		
+		</div>
+	
+		<div class="columns">
+		<div>
+			<select id="filter_type">
+					<option value="mitchell">mitchell</option>
+					<option value="lanczoc">lanczoc</option>
+					<option value="gauss">gauss</option>
+					<option value="box">box</option>
+				</select>
+		</div>
+		<div><label title='AA Filter size' for="aa_pixelwidth">AA PixelWidth:</label>
+			<input  type='text' id="aa_pixelwidth"/></div>
+		</div>
+		</div>
+		</ul>
+    </li>
+	<li>&nbsp Method of lighting
+		<ul>
+		<div class="columns">
+		<div>
+			<select id="light_type">
+					<option value="DebugIntegrator">Debug</option>
+				<!--<option value="bidirectional">Bidirectional (Experimental)</option>-->
+					<option value="pathtracing">Pathtracing</option>
+					<option value="photonmapping">Photon mapping</option>
+					<option value="directlighting">Direct lighting</option>
+				</select>
+		</div>
+		</div>
+		<div id="list">
+		<div id="DebugIntegrator">
+		<div class="columns">
+		<div><select id="debugType">
+					<option value="7">dSdV</option>
+					<option value="6">dSdU</option>
+					<option value="5">NV</option>
+					<option value="4">NU</option>
+					<option value="3">dPdV</option>
+					<option value="2">dPdU</option>
+					<option value="1">N</option>
+				</select>
+		</div>
+		<div><input type='checkbox' id="showPN"/><label title='' for="showPN">Perturbed normals</label></div>
+		</div>
+		</div>
+	<!--<div id="bidirectional">
+		</div>-->
+		
+		<div id="pathtracing">
+		<div class="columns">
+		<!--<div>Caustics method:</div>-->
+		<div><select id="caustic_type">
+					<option value="both">Path+Photon</option>
+					<option value="photon">Photon</option>
+					<option value="path">Path</option>
+					<option value="none">None</option>
+				</select></div>
+		<div></div>		
+		</div>
+		<div id="photon">
+		<div class="columns">
+		<div><label title='' for="photons">Photons:</label>
+				<input  type='text' id="photons"/></div>
+		<div><label title='' for="caustic_mix">Caustics mix.:</label>
+				<input  type='text' id="caustic_mix"/></div>
+		</div>
+		<div class="columns">
+		<div><label title='' for="caustic_depth">Caustic depth:</label>
+				<input  type='text' id="caustic_depth"/></div>
+		<div><label title='' for="caustic_radius">Caustic radius:</label>
+				<input  type='text' id="caustic_radius"/></div>
+		</div>
+		</div>
+		<div class="columns">
+		<div><label title='bounces' for="bounces">Depth:</label>
+				<input  type='text' id="bounces"/></div>
+		<div></div>
+		</div>
+		<div class="columns">
+		<div><label title='path_samples' for="path_samples">Path samples:</label>
+				<input  type='text' id="path_samples"/></div>
+		<div><input type='checkbox' id="no_recursive"/><label title='no_recursive' for="no_recursive">No recursion</label></div>
+		</div>
+		</div>
+		<!--photon mapping-->
+		<div id="photonmapping">
+		<div class="columns">
+		<div><label title='pm_bounces' for="pm_bounces">Depth:</label>
+				<input  type='text' id="pm_bounces"/></div>
+		<div></div>
+		</div>
+		<div class="columns">
+		<div><label title='' for="pm_photons">Diff. Photons:</label>
+				<input  type='text' id="pm_photons"/></div>
+		<div><label title='' for="cPhotons">Caustic photons:</label>
+				<input  type='text' id="cPhotons"/></div>
+		</div>
+				<div class="columns">
+		<div><label title='' for="diffuseRadius">Diff. radius:</label>
+				<input  type='text' id="diffuseRadius"/></div>
+		<div><label title='' for="causticRadius">Caus. radius:</label>
+				<input  type='text' id="causticRadius"/></div>
+		</div>
+				<div class="columns">
+		<div><label title='' for="search">Search:</label>
+				<input  type='text' id="search"/></div>
+		<div><label title='' for="pm_caustic_mix">Caustic Mix:</label>
+				<input  type='text' id="pm_caustic_mix"/></div>
+		</div>
+		<div class="columns">
+		<div><input type='checkbox' id="finalGather"/><label title='finalGather' for="finalGather">Final gather</label></div>
+		<div><label title='fg_bounces' for="fg_bounces">FG bounces:</label>
+				<input  type='text' id="fg_bounces"/></div>
+		</div>
+		<div class="columns">
+		<div><label title='fg_samples' for="fg_samples">FG samples:</label>
+				<input  type='text' id="fg_samples"/></div>
+		<div><input type='checkbox' id="show_map"/><label title='show_map' for="show_map">Show map</label></div>
+		</div>
+		
+		</div>
+		
+		<div id="directlighting">
+		<div class="columns">
+		<div><input type='checkbox' id="caustics"/><label title='' for="caustics">Use caustics</label></div>
+		<div></div>
+		</div>
+		<div class="columns">
+		<div><input type='checkbox' id="do_AO"/><label title='' for="do_AO">Use AO</label></div>
+		<div></div>
+		</div>
+		</div>
+		</div>
+		</ul>
+	</li>
+		
+	<li>&nbsp Output
+		<ul>
+		<div class="columns">
+		<div><label title='Gamma correction applied to final output, inverse correction of textures and colors is performed' for="gamma">Gamma:</label>
+				<input  type='text' id="gamma"/></div>
+		<div><label title='Gamma correction applied to input' for="gamma_input">Gamma input:</label>
+				<input  type='text' id="gamma_input"/></div>
+		</div>
+		</div>
+		<div class="columns">
+		<div><input type='checkbox' id="clamp_rgb"/><label title='' for="clamp_rgb">Clamp RGB</label></div>
+		<div><input type='checkbox' id="premult"/><label title='' for="premult">Premultiply Alpha</label></div>
+		</div>
+		<div class="columns">
+		<div><label title='width' for="width">Width:</label>
+				<input  type='text' id="width"/></div>
+		<div><label title='height' for="height">Height:</label>
+				<input  type='text' id="height"/></div>
+		</div>
+		</ul>
+	</li>
+<!--	<li>&nbsp GUI output options
+		<ul>
+		<div class="columns">
+		</div>
+		<div class="columns">
+		</div>
+		<div class="columns">
+		</div>
+		<div class="columns">
+		</div>
+		</ul>
+	</li>-->
+	<li>&nbsp Camera
+		<ul>
+		<div class="columns">
+			<div><select id="camera_type">
+					<!--<option value="architect">architect</option>
+					<option value="angular">angular</option> -->
+					
+					<!--<option value="orthographic">orthographic</option>-->
+					<option value="perspective">perspective</option>
+				</select></div>
+		<div></div>
+		</div>
+		
+		<!--<div class="columns">
+		</div>
+		<div class="columns">
+		</div>
+		<div class="columns">
+		</div>-->
+		</ul>
+	</li>
+	<li>&nbsp Background
+		<ul>
+		<div class="columns">
+		<div><select id="background_type">
+					<option value="constant">Single Color</option>
+					<option value="gradientback">Gradient</option>
+					<!--<option value="path">Texture</option>-->
+					<option value="sunsky">SunSky</option>
+					<option value="darksky">DarkTide's SunSky</option>
+				</select></div>
+		<div></div>		
+		</div>
+		<div class="columns">
+		<div><label for="bg_color">BG Color:</label>
+			<input  type='text' id="bg_color" value="FF0000"/></div>
+		</div>
+		<div class="columns">
+			<div><input type='checkbox' id="use_IBL"/><label title='' for="use_IBL">Use IBL</label></div>
+		<div class="columns">
+		<!--<div><label for="bg_color">BG Color:</label>
+			<input  type='text' id="bg_color" value="FF0000"/></div>
+		<div><label for="bg_color">BG Color:</label>
+			<input  type='text' id="bg_color" value="FF0000"/></div>-->
+		</div>
+		</ul>
+	</li>
+	
+<!--	<li>&nbsp Volume integrator
+		<ul></ul>
+	</li>-->
+  </ul>
+</body>
+</html>

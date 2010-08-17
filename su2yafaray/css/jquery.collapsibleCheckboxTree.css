@@ -1,0 +1,93 @@
+/* v1.0 | 20080212  css reset*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* end css reset */
+
+
+
+body {
+font-family: Verdana, Arial, Helvetica, sans-serif;
+background: #727272;
+}
+#example ul {
+	margin:0!important;
+	padding:10px 0 0 0px!important;
+}
+
+ul#example li {
+
+	list-style:none;
+	font-size:13px;
+	padding:5px;
+	border-top: 1px solid #393939; /* син€€ лини€ */
+	border-bottom: 1px solid #959595; /* бела€ лини€ */
+	margin: -1px 0 -2px; /* "нахлестываем" на предыдущий и следующий пункт,
+	в результате чего и достигаетс€ нужный эффект */
+	height: 1%; /* дл€ устранени€ бага в IE6 и IE7 */
+}
+#example ul.hide {
+	display:none;
+	font-size:11px;
+}
+#example ul {
+font-size:11px;
+}
+
+#example span {
+	color:#999;
+	font-family:"Courier New", Courier, monospace;
+	cursor:default;
+}
+#example span.expanded, #example span.collapsed {
+	cursor:pointer;
+}

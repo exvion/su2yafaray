@@ -1,0 +1,58 @@
+
+.indicator {
+background: url("../img/slider/gradient_gray_off.png") repeat-x scroll 0pt 0pt transparent;
+position: absolute;
+width:67%;
+margin: 1px 0 5px 2px;
+height:18px;
+}
+
+.indicator_click {
+background: url("../img/slider/gradient_gray_on.png") repeat-x scroll 0pt 0pt transparent;
+position: absolute;
+width:67%;
+margin: 1px 0 5px 2px;
+height:18px;
+}
+
+.slider{
+padding:1px 6px 0 6px;
+cursor: pointer;
+}
+
+.counter{
+position:absolute; 
+width:100%; 
+text-align:center;
+z-index:1;
+padding:5px 0;
+-moz-user-select: none; //Firefox
+-khtml-user-select: none; //Safari
+user-select: none; //работает в css3
+}
+
+.column {
+width:50%;
+border:0px solid red;
+float:left;
+}
+
+
+.contentwrapper{
+float: left;
+width: 100%;
+height: 21px;
+background: url("../img/slider/slider_fill.png") repeat-x scroll 0 0 transparent;
+}
+.contentwrapper_click {
+float: left;
+width: 100%;
+height: 21px;
+background: url("../img/slider/slider_fill_click.png") repeat-x scroll 0 0 transparent;
+}
+
+
+.contentcolumn{
+position:relative;
+margin: 0 10px 0 8px;
+}

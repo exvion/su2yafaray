@@ -1,0 +1,23 @@
+.mycolorpicker-fill{
+float: left;
+width: 100%;
+height: 21px;
+background: url("../img/colorpicker2/colorpicker_fill.png") repeat-x scroll 0 0 transparent;
+}
+.mycolorpicker-label{
+padding:0px 0px 0px 0px;
+height:21px; 
+float:left;
+margin:0 7px;
+}
+.mycolorpicker {
+width:65%;
+height:21px;
+background-color:#FF0000;
+float:right;
+margin:0 7px;
+}
+
+.clear {
+	clear:both;
+}	

@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Material Editor</title>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery.slider.js"></script>
+<script type="text/javascript" src="js/jquery.spin.js"></script>
+<script type="text/javascript" src="js/jquery.checkbox.js"></script>
+<script type="text/javascript" src="js/jquery.mycolorpicker.js"></script>
+
+<!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
+<!--<script type="text/javascript" src="firebug-lite.js"></script>-->
+<script type="text/javascript" src="js/colorpicker/colorpicker.js"></script>
+<script type="text/javascript" src="js/colorpicker/eye.js"></script>
+<script type="text/javascript" src="js/colorpicker/utils.js"></script>
+<!--<script type="text/javascript" src="js/colorpicker/layout.js?ver=1.0.2"></script>-->
+<script type="text/javascript">
+$(document).ready(
+function()
+{		
+		$("select,:text").change(function() {
+		    
+			window.location = 'skp:param_generate@' + this.id+'='+this.value;
+		});
+		
+		$('#material_type').change(function () {
+			$('#mat_options>div').hide();
+			if (this.value=='shinydiffusemat') {
+				$('#color').parent('div').show();
+				$('#mirror_color').parent('div').show();
+				$("label[for='diffuse_reflect']").parent('div').show();
+				
+				$("label[for='specular_reflect']").parent('div').show();
+				$("label[for='transparency']").parent('div').show();
+				$("label[for='translucency']").parent('div').show();
+				$("label[for='transmit_filter']").parent('div').show();
+				$("label[for='emit']").parent('div').show();
+				$("label[for='IOR']").parent('div').show();
+				$("label[for='sigma']").parent('div').show();
+			}
+			if (this.value=='glossy') {
+				$('#color').parent('div').show();
+				$("label[for='diffuse_color']").parent('div').show();
+				$("label[for='diffuse_reflect']").parent('div').show();
+				$("label[for='glossy_reflect']").parent('div').show();
+				$("label[for='exponent']").parent('div').show();
+				$("label[for='color']").parent('div').show();
+			}
+			if (this.value=='coated_glossy') {
+				$('#color').parent('div').show();
+				$("label[for='diffuse_color']").parent('div').show();
+				$("label[for='diffuse_reflect']").parent('div').show();
+				$("label[for='glossy_reflect']").parent('div').show();
+				$("label[for='exponent']").parent('div').show();
+			}
+			if (this.value=='rough_glass') {
+				$("label[for='absorption']").parent('div').show();
+				$("label[for='absorption_dist']").parent('div').show();
+				$("label[for='filter_color']").parent('div').show();
+				$("label[for='mirror_color']").parent('div').show();
+				$("label[for='IOR']").parent('div').show();
+				$("label[for='exponent']").parent('div').show();
+				$("label[for='transmit_filter']").parent('div').show();
+				$("label[for='dispersion_power']").parent('div').show();
+			}
+			if (this.value=='glass') {
+				$("label[for='absorption']").parent('div').show();
+				$("label[for='absorption_dist']").parent('div').show();
+				$("label[for='filter_color']").parent('div').show();
+				$("label[for='mirror_color']").parent('div').show();
+				$("label[for='IOR']").parent('div').show();
+				$("label[for='transmit_filter']").parent('div').show();
+				$("label[for='dispersion_power']").parent('div').show();
+			}
+			
+		});
+		
+	$('#diffuse_reflect').slider({min:0,max:1,interval:0.001});
+	$('#specular_reflect').slider({min:0,max:1,interval:0.001});
+	$('#transparency').slider({min:0,max:1,interval:0.001});
+	$('#translucency').slider({min:0,max:1,interval:0.001});
+	$('#transmit_filter').slider({min:0,max:1,interval:0.001});
+	$('#emit').spin({min:0,max:1000,interval:0.1});
+	$('#IOR').slider({min:1,max:30,interval:0.01});
+	$('#sigma').spin({min:0,max:1,interval:0.1});
+	
+	
+	$('#absorption_dist').slider({min:1,max:100,interval:0.01});
+	$('#exponent').slider({min:1,max:5000,interval:0.01});
+	$('#dispersion_power').slider({min:0,max:10000,interval:0.01});
+	
+	$('#glossy_reflect').slider({min:0,max:1,interval:0.001});
+		
+	$('#color').mycolorpicker();
+	$('#mirror_color').mycolorpicker();
+	$('#diffuse_color').mycolorpicker();
+	$('#absorption').mycolorpicker();
+	$('#filter_color').mycolorpicker();
+	
+			$('#color').ColorPicker({
+			onSubmit: function(hsb, hex, rgb, el) {
+				$(el).val(hex);
+				$(el).ColorPickerHide();
+			},
+			onBeforeShow: function () {
+				$(this).ColorPickerSetColor(this.value);
+			}
+		})
+	
+}
+);
+</script>
+<link rel="stylesheet" href="css/colorpicker/colorpicker.css" type="text/css" />
+<!--<link rel="stylesheet" media="screen" type="text/css" href="css/colorpicker/layout.css" />-->
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.slider.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.spin.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/jquery.mycolorpicker.css" />
+<style type="text/css">
+
+@font-face {
+ font-family: Bitstream;
+ src: url("font/bfont.eot") /* EOT file for IE */
+}
+
+@font-face {
+ font-family: Bitstream;
+ src: url("font/bfont.ttf") /* TTF file for CSS3 browsers */
+}
+
+
+body {
+overflow: hidden;
+font-family: Bitstream, Verdana, Arial, Helvetica, sans-serif;
+background: #727272;
+font-size:11px;
+}
+input[type="text"] {
+text-align:center;
+}
+
+select, input {
+vertical-align:middle;
+font-family:Bitstream, Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+font-size:1.1em;
+color:#fdfdfd;
+background:#444444;
+}
+#mat_options {
+margin:7px 0 0 0;
+}
+
+#mat_options>div {
+height:23px;
+}
+
+input:focus {
+outline: none;
+}
+</style>
+
+</head>
+<body>
+
+<label for="material_name">Material name:</label>
+<input type="text" id="material_name" value="no selected material"/>
+<br/>
+
+<label title='material type' for="material_type">Material type:</label>
+<select id="material_type">
+	<option value="shinydiffusemat">shinydiffusemat</option>
+	<option value="glossy">glossy</option>
+	<option value="coated_glossy">coated_glossy</option>
+	<option value="rough_glass">Rough Glass</option>
+	<option value="glass">glass</option>
+	<option value="light_mat">light_mat</option>
+</select>
+
+<div id="mat_options">
+	<div><label  for="color">Color:</label>
+				<input  type='text' id="color" value="FF0000"/></div>
+	<div><label  for="mirror_color">Mirror color:</label>
+				<input  type='text' id="mirror_color"/></div>
+	<div><label  for="diffuse_reflect">Diffuse reflection:</label>
+				<input  type='text' id="diffuse_reflect"/></div>
+	<div><label  for="specular_reflect">Mirror strength:</label>
+				<input  type='text' id="specular_reflect"/></div>
+	<div><label  for="transparency">Transparency:</label>
+				<input  type='text' id="transparency"/></div>
+	<div><label  for="translucency">Translucency:</label>
+				<input  type='text' id="translucency"/></div>
+	<div><label  for="transmit_filter">Transmit filter:</label>
+				<input  type='text' id="transmit_filter"/></div>
+	<div><label  for="emit">Emit:</label>
+				<input  type='text' id="emit"/></div>
+	<div><label  for="IOR">IOR:</label>
+				<input  type='text' id="IOR"/></div>
+	<div><select id="diffuse_brdf">
+					<option value="oren_nayar">Oren-Nayar</option>
+					<option value="lambert">Normal (Lambert)</option>
+				</select>
+	</div>
+	<div><label  for="sigma">Sigma:</label>
+				<input  type='text' id="sigma"/></div>
+	
+	<div><label  for="diffuse_color">diffuse_color:</label>
+				<input  type='text' id="diffuse_color"/></div>
+	<div><label  for="glossy_reflect">glossy_reflect:</label>
+				<input  type='text' id="glossy_reflect"/></div>
+	<div><label  for="exponent">exponent:</label>
+				<input  type='text' id="exponent"/></div>
+	<div>
+		<label  for="absorption">Absorp. color:</label>
+		<input  type='text' id="absorption"/>
+	</div>
+	<div><label  for="absorption_dist">Absorption distance:</label>
+				<input  type='text' id="absorption_dist"/></div>
+	<div><label  for="filter_color">filter_color:</label>
+				<input  type='text' id="filter_color"/></div>
+	<div><label  for="dispersion_power">dispersion_power:</label>
+				<input  type='text' id="dispersion_power"/></div>
+<div id="light_mat">
+</div>
+</div>
+</body>
+</html>
