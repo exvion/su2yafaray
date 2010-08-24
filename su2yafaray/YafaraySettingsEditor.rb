@@ -71,6 +71,7 @@ def initialize
 				when "auto_threads"
 					@ys.auto_threads=true if value=="true"
 					@ys.auto_threads=false if value=="false"
+					setValue("threads",@ys.threads)
 				when "threads"
 					@ys.threads=value
 				#output settings
@@ -150,6 +151,18 @@ def initialize
 				#background
 				when "background_type"
 					@ys.background_type=value
+				when "turbidity"
+					@ys.turbidity=value
+				when "a_var"
+					@ys.a_var=value
+				when "b_var"
+					@ys.b_var=value
+				when "c_var"
+					@ys.c_var=value
+				when "d_var"
+					@ys.d_var=value
+				when "e_var"
+					@ys.e_var=value
 			end	
 	} #end action callback param_generatate
 	
@@ -268,7 +281,7 @@ def SendDataFromSketchup()
 	setCheckbox("clayrender",@ys.clayrender)
 	setCheckbox("z_channel",@ys.z_channel)
 	setCheckbox("transpShad",@ys.transpShad)
-	setValue("threads",@ys.threads)
+	p @ys.auto_threads
 	setCheckbox("auto_threads",@ys.auto_threads)
 	
 	setValue("gamma",@ys.gamma)
@@ -307,6 +320,15 @@ def SendDataFromSketchup()
 	#camera
 	setValue("camera_type",@ys.camera_type)
 	setValue("background_type",@ys.background_type)
+	
+	##########background
+	#sunsky
+	setValue("a_var",@ys.a_var)
+	setValue("b_var",@ys.a_var)
+	setValue("c_var",@ys.a_var)
+	setValue("d_var",@ys.a_var)
+	setValue("e_var",@ys.a_var)
+	setValue("turbidity",@ys.turbidity)
 end 
 
 def setValue(id,value)
@@ -335,7 +357,7 @@ end
 
 def setCheckbox(id,value)
 	
-	if value==true
+	if value
 		cmd="$('##{id}').attr('checked', 'checked'); $('##{id}').change();"
 	else
 		cmd="$('##{id}').removeAttr('checked'); $('##{id}').change();"
@@ -363,4 +385,4 @@ def change_aspect_ratio(aspect_ratio)
 end
 
 
-end #end class YafaraySettingsEditor
+end #end class YafaraySettingsEditor	

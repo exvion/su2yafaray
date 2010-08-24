@@ -23,7 +23,7 @@ class YafarayMaterial
 	@@options=
 	{
 	'type'=>"shinydiffusemat",
-	'IOR'=>"1.0",
+	'IOR'=>"1.51",
 	'diffuse_brdf'=>"lambert",
 	'diffuse_reflect'=>"1",
 	'emit'=>'0',

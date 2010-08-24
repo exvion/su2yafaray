@@ -10,6 +10,7 @@
 <script type="text/javascript" src="js/jquery.selectbox.js"></script>
 <script type="text/javascript" src="js/jquery.slider.js"></script>
 <script type="text/javascript" src="js/jquery.mycolorpicker.js"></script>
+<script type="text/javascript" src="js/firebug-lite.js"></script>
 <script type="text/javascript" src="js/jquery.collapsibleCheckboxTree.js"></script>
 <!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 <link rel="stylesheet" href="css/jquery.collapsibleCheckboxTree.css" type="text/css" />
@@ -22,6 +23,55 @@
 $(document).ready(
 function()
 {		
+		$('#background_type').change(function () {
+			//alert("background_type change");
+			$('#background_options>div').hide();
+			if (this.value=='constant') {
+				$('#bg_color').parent('div').parent('div').show();
+				$('#use_IBL').parent('div').parent('div').show();
+				$("label[for='ibl_samples']").parent('div').parent('div').show();
+				$("label[for='power']").parent('div').parent('div').show();
+			}
+			if (this.value=='gradientback') {
+				$("label[for='horizon_color']").parent('div').parent('div').show();
+				$('#horizon_ground_color').parent('div').parent('div').show();
+				$('#zenith_color').parent('div').parent('div').show();
+				$('#zenith_ground_color').parent('div').parent('div').show();
+				$('#use_IBL').parent('div').parent('div').show();
+				$('#ibl_samples').parent('div').parent('div').show();
+				$('#power').parent('div').parent('div').show();
+				
+			}
+			if (this.value=='sunsky') {
+				$("label[for='turbidity']").parent('div').parent('div').show();
+				$("label[for='a_var']").parent('div').parent('div').show();
+				$("label[for='b_var']").parent('div').parent('div').show();
+				$("label[for='c_var']").parent('div').parent('div').show();
+				$("label[for='d_var']").parent('div').parent('div').show();
+				$("label[for='e_var']").parent('div').parent('div').show();
+			}
+			if (this.value=='darksky') {
+				$("label[for='turbidity']").parent('div').parent('div').show();
+				$("label[for='a_var']").parent('div').parent('div').show();
+				$("label[for='b_var']").parent('div').parent('div').show();
+				$("label[for='c_var']").parent('div').parent('div').show();
+				$("label[for='d_var']").parent('div').parent('div').show();
+				$("label[for='e_var']").parent('div').parent('div').show();
+				$("label[for='altitude']").parent('div').show();
+				$("label[for='night']").parent('div').show();
+				$("label[for='bright']").parent('div').show();
+				$("label[for='exposure']").parent('div').show();
+				$("label[for='sun_power']").parent('div').show();
+				$("label[for='light_samples']").parent('div').show();
+				$("label[for='power']").parent('div').show();
+				$("label[for='with_caustic']").parent('div').show();
+				$("label[for='with_diffuse']").parent('div').show();
+				$("color_space").parent('div').show();
+			}		
+		});
+		
+		
+		
 		$('#light_type').change(function () {
 			$('#list div').hide();
 			$('#' + this.value).show();
@@ -58,7 +108,45 @@ function()
 			window.location = 'skp:param_generate@' + this.id+'='+this.value;
 		});
 		
+		setCheckboxOnOff=function($this){
+if ($this.attr('checked'))
+		{
+			if ($this.is('#auto_threads'))
+			{
+			$('#threads').closest("div").hide();
+			}
+			if ($this.is('#transpShad'))
+			{
+				$('#shadowDepth').closest("div").show();
+			}
+			$this.closest("div").removeClass("checkboxOff");
+			$this.closest("div").addClass("checkboxOn");
+			$this.next("label").css('color','#FFFFFF');
+		}
+		else 
+		{	
+			if ($this.is('#transpShad'))
+			{
+				$('#shadowDepth').closest("div").hide();
+			}
+			if ($this.is('#auto_threads'))
+			{
+				$('#threads').closest("div").show();	
+			}
+			$this.closest("div").removeClass("checkboxOn");
+			$this.closest("div").addClass("checkboxOff");
+			$this.next("label").css('color','#000000');
+		}
+
+}
+
+$("input:checkbox").parent("div").addClass("checkboxOff");
+		
+		
 		$(":checkbox").click(function() {
+			window.location = 'skp:param_generate@' + this.id + '=' + $(this).attr('checked');
+		});
+		$(":checkbox").change(function() {
 			window.location = 'skp:param_generate@' + this.id + '=' + $(this).attr('checked');
 		});
 		
@@ -101,44 +189,24 @@ function()
 		$('#search').spin({min:1,max:10000});
 		$('#pm_caustic_mix').spin({min:1,max:10000});
 		
+		//background_world
+		//constant
 		$('#bg_color').mycolorpicker();
+		$('#ibl_samples').spin();
+		$('#power').spin();
 		
+		//darksky
+		$('#turbidity').spin();
+		$('#a_var').spin();
+		$('#b_var').spin();
+		$('#c_var').spin();
+		$('#d_var').spin();
+		$('#e_var').spin();
+		$('#altitude').spin();
+
+		$(":checkbox").click(function(){setCheckboxOnOff($(this));});
+		$(":checkbox").change(function(){setCheckboxOnOff($(this));});
 		
-$("input:checkbox").parent("div").addClass("checkboxOff");
-
-setCheckboxOnOff=function($this){
-if ($this.attr('checked'))
-		{
-			if ($this.is('#auto_threads'))
-			{
-			$('#threads').closest("div").hide();
-			}
-			if ($this.is('#transpShad'))
-			{
-				$('#shadowDepth').closest("div").show();
-			}
-			$this.closest("div").removeClass("checkboxOff");
-			$this.closest("div").addClass("checkboxOn");
-			$this.next("label").css('color','#FFFFFF');
-		}
-		else 
-		{	
-			if ($this.is('#transpShad'))
-			{
-				$('#shadowDepth').closest("div").hide();
-			}
-			if ($this.is('#auto_threads'))
-			{
-				$('#threads').closest("div").show();	
-			}
-			$this.closest("div").removeClass("checkboxOn");
-			$this.closest("div").addClass("checkboxOff");
-			$this.next("label").css('color','#000000');
-		}
-}
-
-$(":checkbox").click(function(){setCheckboxOnOff($(this));});
-$(":checkbox").change(function(){setCheckboxOnOff($(this));});
 
 $(".columns").each(function (i) {
 var colWrap = $(this).width();
@@ -534,7 +602,6 @@ width:200%;
 		<div><label title='Gamma correction applied to input' for="gamma_input">Gamma input:</label>
 				<input  type='text' id="gamma_input"/></div>
 		</div>
-		</div>
 		<div class="columns">
 		<div><input type='checkbox' id="clamp_rgb"/><label title='' for="clamp_rgb">Clamp RGB</label></div>
 		<div><input type='checkbox' id="premult"/><label title='' for="premult">Premultiply Alpha</label></div>
@@ -586,23 +653,116 @@ width:200%;
 		<div><select id="background_type">
 					<option value="constant">Single Color</option>
 					<option value="gradientback">Gradient</option>
-					<!--<option value="path">Texture</option>-->
 					<option value="sunsky">SunSky</option>
 					<option value="darksky">DarkTide's SunSky</option>
 				</select></div>
 		<div></div>		
 		</div>
+		<div id="background_options">
 		<div class="columns">
 		<div><label for="bg_color">BG Color:</label>
 			<input  type='text' id="bg_color" value="FF0000"/></div>
 		</div>
 		<div class="columns">
-			<div><input type='checkbox' id="use_IBL"/><label title='' for="use_IBL">Use IBL</label></div>
+		<div><label for="horizon_color">horizon_color:</label>
+			<input  type='text' id="horizon_color" value="FF0000"/></div>
+		</div>
 		<div class="columns">
-		<!--<div><label for="bg_color">BG Color:</label>
-			<input  type='text' id="bg_color" value="FF0000"/></div>
-		<div><label for="bg_color">BG Color:</label>
-			<input  type='text' id="bg_color" value="FF0000"/></div>-->
+		<div><label for="horizon_ground_color">horizon_ground_color:</label>
+			<input  type='text' id="horizon_ground_color" value="FF0000"/></div>
+		</div>
+		<div class="columns">
+		<div><label for="zenith_color">zenith_color:</label>
+			<input  type='text' id="zenith_color" value="FF0000"/></div>
+		</div>
+		<div class="columns">
+		<div><label for="zenith_ground_color">zenith_ground_color:</label>
+			<input  type='text' id="zenith_ground_color" value="FF0000"/></div>
+		</div>
+		
+		<div class="columns">
+			<div><input type='checkbox' id="use_IBL"/><label title='' for="use_IBL">Use IBL</label></div>
+		</div>
+		<div class="columns">
+			<div><label  for="ibl_samples">ibl_samples:</label>
+				<input  type='text' id="ibl_samples"/></div>
+		</div>
+		
+		<div class="columns">
+			<div><label  for="turbidity">turbidity:</label>
+				<input  type='text' id="turbidity"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="a_var">Brightness of horizon gradint:</label>
+				<input  type='text' id="a_var"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="b_var">Luminance of horizon:</label>
+				<input  type='text' id="b_var"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="c_var">Solar region intensity:</label>
+				<input  type='text' id="c_var"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="d_var">Width of circumsolar region:</label>
+				<input  type='text' id="d_var"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="e_var">Backscattered light:</label>
+				<input  type='text' id="e_var"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="altitude">Altitude:</label><input  type='text' id="altitude"/></div>
+		</div>
+		<div class="columns">
+		<div><select id="color_space">
+					<option value="CIE (E)">CIE (E)</option>
+					<option value="CIE (D50)">CIE (D50)</option>
+					<option value="sRGB (D50)">sRGB (D50)</option>
+					<option value="sRGB (D60)">sRGB (D60)</option>
+				</select></div>
+		<div></div>		
+		</div>
+		<div class="columns">
+			<div><input type='checkbox' id="night"/><label title='' for="night">Night</label></div>
+		</div>
+		<div class="columns">
+			<div><label  for="bright">Brightness:</label>
+				<input  type='text' id="bright"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="exposure">exposure:</label>
+				<input  type='text' id="exposure"/></div>
+		</div>
+		
+		<div class="columns">
+			<div><label  for="light_samples">light_samples:</label>
+				<input  type='text' id="light_samples"/></div>
+		</div>
+		<div class="columns">
+			<div><label  for="sun_power">sun_power:</label>
+				<input  type='text' id="sun_power"/></div>
+		</div>
+		<div class="columns">
+			<div><input type='checkbox' id="background_light"/><label title='' for="background_light">skylight</label></div>
+		</div>
+		<div class="columns">
+			<div><input type='checkbox' id="add_sun"/><label title='' for="add_sun">add_sun</label></div>
+		</div>
+		<div class="columns">
+			<div><label  for="power">power:</label><input  type='text' id="power"/></div>
+		</div>
+		<div class="columns">
+			<div><input type='checkbox' id="gamma_encoding"/><label title='' for="background_light">skylight</label></div>
+		</div>
+		<div class="columns">
+			<div><input type='checkbox' id="dwith_diffuse"/><label title='' for="with_diffuse">diffuse photons</label></div>
+		</div>		
+		<div class="columns">
+			<div><input type='checkbox' id="with_caustic"/><label title='' for="with_caustic">caustic photons</label></div>
+		</div>
+		
 		</div>
 		</ul>
 	</li>

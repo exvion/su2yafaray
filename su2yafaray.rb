@@ -21,7 +21,7 @@
 #					SU2KT by Tomasz Marek, Stefan Jaensch, Tim Crandall, 
 #					SU2POV by Didier Bur and OGRE exporter by Kojack
 # Usage        : Copy script to PLUGINS folder in SketchUp folder, run SU, go to Plugins\Yafaray exporter
-# Date         : 2010-08-17
+# Date         : 2010-06-29
 # Type         : Exporter
 # Version      : 0.1 alpha
 
@@ -280,15 +280,14 @@ def SU2YAFARAY.export_background(yi)
 		yi.paramsSetString("type", "constant")
 	elsif (@ys.background_type=="gradientback")
 		p "gradientback"
-	#elsif (@ys.background_type=="path")
 	elsif (@ys.background_type=="sunsky")
-		yi.paramsSetFloat("a_var",1.30)
+		yi.paramsSetFloat("a_var",Float(@ys.a_var))
 		yi.paramsSetBool("add_sun",true)
-		yi.paramsSetFloat("b_var",0.5)
+		yi.paramsSetFloat("b_var",Float(@ys.b_var))
 		yi.paramsSetBool("background_light",true)
-		yi.paramsSetFloat("c_var",1)
-		yi.paramsSetFloat("d_var",1)
-		yi.paramsSetFloat("e_var",1)
+		yi.paramsSetFloat("c_var",Float(@ys.c_var))
+		yi.paramsSetFloat("d_var",Float(@ys.d_var))
+		yi.paramsSetFloat("e_var",Float(@ys.e_var))
 		yi.paramsSetPoint("from",sun_direction.x,sun_direction.y,sun_direction.z)
 		yi.paramsSetInt("light_samples",16)
 		yi.paramsSetFloat("power",0.75)
@@ -296,7 +295,29 @@ def SU2YAFARAY.export_background(yi)
 		yi.paramsSetFloat("turbidity",3)
 		yi.paramsSetString("type", "sunsky")
 	elsif (@ys.background_type=="darksky")
-		p "gradientback"
+		p "darksky"
+		yi.paramsSetPoint("from",sun_direction.x,sun_direction.y,sun_direction.z)
+		yi.paramsSetFloat("turbidity",Float(@ys.turbidity))
+		yi.paramsSetFloat("altitude",Float(@ys.altitude))
+		yi.paramsSetFloat("a_var",Float(@ys.a_var))
+		yi.paramsSetFloat("b_var",Float(@ys.b_var))
+		yi.paramsSetFloat("c_var",Float(@ys.c_var))
+		yi.paramsSetFloat("d_var",Float(@ys.d_var))
+		yi.paramsSetFloat("e_var",Float(@ys.e_var))
+		yi.paramsSetBool("clamp_rgb", false)
+		yi.paramsSetBool("add_sun", true)
+		yi.paramsSetFloat("sun_power", 1)
+		yi.paramsSetBool("background_light",true)
+		yi.paramsSetBool("with_caustic", false)
+		yi.paramsSetBool("with_diffuse", false)
+		yi.paramsSetInt("light_samples",16)
+		yi.paramsSetFloat("power",0.75)
+		yi.paramsSetFloat("bright", 1)
+		yi.paramsSetBool("night", false)
+		yi.paramsSetFloat("exposure", 1)
+		yi.paramsSetBool("gamma_enc", true)
+		yi.paramsSetString("color_space", "CIE (E)")
+		yi.paramsSetString("type", "darksky")		
 	end
 	#yi.paramsSetPoint("from", 100, 100, 100)
 	#yi.paramsSetFloat("turbidity", 3)
@@ -958,7 +979,7 @@ end
 #####################################################################
 #####################################################################
 def SU2YAFARAY.about
-	UI.messagebox("SU2Yafaray version 0.1 alpha 17th August 2010
+	UI.messagebox("SU2Yafaray version 0.1 alpha 29th June 2010
 SketchUp Exporter to Yafaray
 Author: Alexander Smirnov (aka Exvion)
 E-mail: exvion@gmail.com

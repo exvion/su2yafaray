@@ -76,9 +76,20 @@ class YafaraySettings
 	#camera
 	'camera_type'=>'perspective',
 	
-	#background
-	'background_type'=>'sunsky'
-	
+	######background
+	'background_type'=>'darksky',
+	'a_var'=>'1',
+	'add_sun'=>false,
+	'b_var'=>'1',
+	'background_light'=>false,
+	'c_var'=>'1',
+	'd_var'=>'1',
+	'e_var'=>'1',
+	'light_samples'=>'16',
+	'power'=>'1',
+	'sun_power'=>'1',
+	'turbidity'=>'3',
+	'altitude'=>'0'
 }
 
 def initialize
