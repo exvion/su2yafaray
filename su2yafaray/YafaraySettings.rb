@@ -73,6 +73,9 @@ class YafaraySettings
 	#direct light
 	'caustics'=>false,
 	'do_AO'=>false,
+	'AO_samples'=>'32',
+	'AO_distance'=>'1.0',
+	'AO_color'=>'FFFFFF',
 	#camera
 	'camera_type'=>'perspective',
 	

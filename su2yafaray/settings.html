@@ -12,6 +12,8 @@
 <script type="text/javascript" src="js/jquery.mycolorpicker.js"></script>
 <script type="text/javascript" src="js/firebug-lite.js"></script>
 <script type="text/javascript" src="js/jquery.collapsibleCheckboxTree.js"></script>
+<script type="text/javascript" src="jscolor/jscolor.js"></script>
+
 <!--<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>-->
 <link rel="stylesheet" href="css/jquery.collapsibleCheckboxTree.css" type="text/css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/jquery.selectbox.css" />
@@ -111,6 +113,10 @@ function()
 		setCheckboxOnOff=function($this){
 if ($this.attr('checked'))
 		{
+			if ($this.is('#do_AO'))
+			{
+			$('#AO').show();
+			}
 			if ($this.is('#auto_threads'))
 			{
 			$('#threads').closest("div").hide();
@@ -125,6 +131,10 @@ if ($this.attr('checked'))
 		}
 		else 
 		{	
+			if ($this.is('#do_AO'))
+			{
+			$('#AO').hide();
+			}
 			if ($this.is('#transpShad'))
 			{
 				$('#shadowDepth').closest("div").hide();
@@ -188,6 +198,9 @@ $("input:checkbox").parent("div").addClass("checkboxOff");
 		$('#causticRadius').spin({min:0,max:100,interval:0.01});
 		$('#search').spin({min:1,max:10000});
 		$('#pm_caustic_mix').spin({min:1,max:10000});
+		//AO
+		$('#AO_samples').spin({min:1,max:1000});
+		$('#AO_distance').spin({min:0,max:10000,interval:0.1});
 		
 		//background_world
 		//constant
@@ -565,7 +578,7 @@ width:200%;
 		<div><label title='' for="causticRadius">Caus. radius:</label>
 				<input  type='text' id="causticRadius"/></div>
 		</div>
-				<div class="columns">
+		<div class="columns">
 		<div><label title='' for="search">Search:</label>
 				<input  type='text' id="search"/></div>
 		<div><label title='' for="pm_caustic_mix">Caustic Mix:</label>
@@ -592,6 +605,23 @@ width:200%;
 		<div class="columns">
 		<div><input type='checkbox' id="do_AO"/><label title='' for="do_AO">Use AO</label></div>
 		<div></div>
+		</div>
+		<div id="AO">
+		<div class="columns">
+			<div>
+				<label title='' for="AO_samples">AO samples:</label>
+				<input  type='text' id="AO_samples"/>
+			</div>
+			<div>
+				<label title='' for="AO_distance">AO distance:</label>
+				<input  type='text' id="AO_distance"/>
+			</div>
+		</div>
+		<div class="columns">
+		<div><label title='AO_color' for="AO_color">AO color:</label>
+				<input  class="color" type='text' id="AO_color"/></div>
+		<div></div>
+		</div>
 		</div>
 		</div>
 		</div>

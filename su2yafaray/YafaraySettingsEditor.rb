@@ -144,7 +144,13 @@ def initialize
 					@ys.caustics=false if value=="false"
 				when "do_AO"
 					@ys.do_AO=true if value=="true"
-					@ys.do_AO=false if value="false"
+					@ys.do_AO=false if value=="false"
+				when "AO_samples"
+					@ys.AO_samples=value
+				when "AO_distance"
+					@ys.AO_distance=value
+				when "AO_color"
+					@ys.AO_color=value
 				#camera
 				when "camera_type"
 					@ys.camera_type=value
@@ -316,6 +322,9 @@ def SendDataFromSketchup()
 	setValue("pm_caustic_mix",@ys.pm_caustic_mix)
 	#direct_lighting
 	setCheckbox("do_AO",@ys.do_AO)
+	setValue("AO_color",@ys.AO_color)
+	setValue("AO_samples",@ys.AO_samples)
+	setValue("AO_distance",@ys.AO_distance)
 	setCheckbox("caustics",@ys.caustics)
 	#camera
 	setValue("camera_type",@ys.camera_type)

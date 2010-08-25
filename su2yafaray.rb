@@ -331,6 +331,14 @@ def SU2YAFARAY.export_volumeintegrator(yi)
 	yi.createIntegrator("volintegr")
 end
 
+def SU2YAFARAY.paramsSetColorHex(yi,option_name,value)
+			rgb=value
+			r = rgb[0..1].to_i(16)
+			g = rgb[2..3].to_i(16)
+			b = rgb[4..5].to_i(16)
+			yi.paramsSetColor(option_name,r/255.0, g/255.0, b/255.0)
+end
+
 def SU2YAFARAY.export_integrator(yi)
 	#integrators
 	yi.paramsClearAll()
@@ -350,12 +358,11 @@ def SU2YAFARAY.export_integrator(yi)
 			yi.paramsSetInt("caustic_depth", 10)
 			yi.paramsSetFloat("caustic_radius", 0.1)
 		end
+		yi.paramsSetBool("do_AO", @ys.do_AO)
 		if @ys.do_AO
-			p "use AO"
-			yi.paramsSetBool("do_AO", @ys.do_AO)
-			yi.paramsSetInt("AO_samples", 32)
-			yi.paramsSetFloat("AO_distance", 1)
-			yi.paramsSetColor("AO_color", 1, 1, 1)
+			yi.paramsSetInt("AO_samples",Integer(@ys.AO_samples))
+			yi.paramsSetFloat("AO_distance", Float(@ys.AO_distance))
+			SU2YAFARAY.paramsSetColorHex(yi,"AO_color",@ys.AO_color)
 		end
 	elsif (@ys.light_type=="photonmapping")
 		yi.paramsSetString("type", "photonmapping")
@@ -392,19 +399,7 @@ def SU2YAFARAY.export_integrator(yi)
 	end
 
 	yi.createIntegrator("default")
-	
 
-	#yi.paramsSetString("type", "photonmapping")
-	# yi.paramsSetColor("AO_color",0.332555,0.414614,0.447731,1)
-	# yi.paramsSetFloat("AO_distance",1)
-	# yi.paramsSetInt("AO_samples",32)
-	# yi.paramsSetBool("do_AO",true)
-	# yi.paramsSetBool("caustics",false)
-	# yi.paramsSetInt("raydepth",Integer(@ys.raydepth))
-	# yi.paramsSetInt("shadowDepth",Integer(@ys.shadowDepth))
-	# yi.paramsSetBool("transpShad",@ys.transpShad)
-	# yi.paramsSetString("type", "directlighting")
-	# yi.createIntegrator("default")
 end
 
 def SU2YAFARAY.export_lights(yi)
