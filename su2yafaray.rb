@@ -292,7 +292,7 @@ def SU2YAFARAY.export_background(yi)
 		yi.paramsSetInt("light_samples",16)
 		yi.paramsSetFloat("power",0.75)
 		yi.paramsSetFloat("sun_power",1)
-		yi.paramsSetFloat("turbidity",3)
+		yi.paramsSetFloat("turbidity",Float(@ys.turbidity))
 		yi.paramsSetString("type", "sunsky")
 	elsif (@ys.background_type=="darksky")
 		p "darksky"
@@ -496,7 +496,6 @@ end
 def SU2YAFARAY.render(useXML)
 	#Sketchup.send_action "showRubyPanel:"
 	@ys=YafaraySettings.new
-	p @ys.aa_passes
 	SU2YAFARAY.reset_variables
 	if useXML
 		export_file_path=SU2YAFARAY.get_export_file_path

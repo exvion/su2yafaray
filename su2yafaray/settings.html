@@ -203,11 +203,15 @@ $("input:checkbox").parent("div").addClass("checkboxOff");
 		$('#d_var').spin();
 		$('#e_var').spin();
 		$('#altitude').spin();
-
-		$(":checkbox").click(function(){setCheckboxOnOff($(this));});
-		$(":checkbox").change(function(){setCheckboxOnOff($(this));});
 		
-
+		$('#horizon_color').mycolorpicker();
+		$('#horizon_ground_color').mycolorpicker();
+		$('#zenith_color').mycolorpicker();
+		$('#zenith_ground_color').mycolorpicker();
+		
+$(":checkbox").click(function(){setCheckboxOnOff($(this));});
+$(":checkbox").change(function(){setCheckboxOnOff($(this));});
+		
 $(".columns").each(function (i) {
 var colWrap = $(this).width();
 var childrens=$(this).children();

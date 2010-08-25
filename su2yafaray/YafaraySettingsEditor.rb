@@ -93,8 +93,8 @@ def initialize
 				when "debugType"
 					@ys.debugType=value
 				when "showPN"
-					@ys.showPN=true if value="true"
-					@ys.showPN=false if value="false"
+					@ys.showPN=true if value=="true"
+					@ys.showPN=false if value=="false"
 				#pathtracing
 				when "bounces"
 					@ys.bounces=value
@@ -115,15 +115,15 @@ def initialize
 					@ys.photons=value
 				#photon mapping
 				when "finalGather"
-					@ys.finalGather=true if value="true"
-					@ys.finalGather=false if value="false"
+					@ys.finalGather=true if value=="true"
+					@ys.finalGather=false if value=="false"
 				when "fg_bounces"
 					@ys.fg_bounces=value
 				when "fg_samples"
 					@ys.fg_samples=value
 				when "show_map"
-					@ys.show_map=true if value="true"
-					@ys.show_map=false if value="false"
+					@ys.show_map=true if value=="true"
+					@ys.show_map=false if value=="false"
 				when 'pm_bounces'
 					@ys.pm_bounces=value
 				when 'pm_photons'
