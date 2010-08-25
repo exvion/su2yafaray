@@ -38,8 +38,8 @@ class YafaraySettings
 	'shadowDepth'=>'64',
 	'auto_threads'=>true,
 	'threads'=>'1',
-	'gamma'=>'1.8',
-	'gamma_input'=>'1.8',
+	'gamma'=>'2.2',
+	'gamma_input'=>'2.2',
 	'clamp_rgb'=>false,
 	'premult'=>false,
 	
