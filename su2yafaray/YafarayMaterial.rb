@@ -60,4 +60,9 @@ def name
 	return mat.display_name.gsub(/[<>]/, '*')  #replaces <> characters with *
 end
  
+def has_texture
+	has_texture = false
+	has_texture = true if @mat.texture!=nil
+end
+ 
 end #end class YafarayMaterial

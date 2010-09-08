@@ -19,7 +19,7 @@ end
 ###### - collect entities to an array -						 		######
 #####################################################################
 def collect_faces(object, trans)
-
+	
 	if object.class == Sketchup::ComponentInstance
 		entity_list=object.definition.entities
 	elsif object.class == Sketchup::Group
@@ -27,13 +27,11 @@ def collect_faces(object, trans)
 	else
 		entity_list=object
 	end
-
-	p "entity count="+entity_list.count.to_s
 	text=""
 	text="Component: " + object.definition.name if object.class == Sketchup::ComponentInstance
 	text="Group" if object.class == Sketchup::Group
 	
-	Sketchup.set_status_text "Collecting Faces - Level #{@parent_mat.size} - #{text}"
+	#Sketchup.set_status_text "Collecting Faces - Level #{@parent_mat.size} - #{text}"
 
 	for e in entity_list
 	  
@@ -68,6 +66,7 @@ def find_face_material(e)
 	front_color = Sketchup.active_model.rendering_options["FaceFrontColor"]
 	scale = 0.8 / 255.0
 	mat.color = Sketchup::Color.new(front_color.red * scale, front_color.green * scale, front_color.blue * scale)
+	#mat=FRONTF
 	uvHelp=nil
 	mat_dir=true
 	if e.material!=nil
@@ -114,10 +113,9 @@ def store_textured_entities(e,mat,mat_dir)
 
 	tw=@texturewriter
 
-	puts "MATERIAL: " + mat.display_name if verb==true
 	uvHelp=nil
 	number=0
-	mat_name=mat.display_name.delete"<>[]" #TODO rename material name
+	mat_name=mat.display_name.gsub(/[<>]/,'*') #TODO rename material name
 
 	if (e.class==Sketchup::Group or e.class==Sketchup::ComponentInstance) and mat.respond_to?(:texture) and mat.texture!=nil
 			txcount=tw.count
@@ -185,15 +183,16 @@ end
 
 def get_texture_name(name,mat)
 	ext=mat.texture.filename
-	p 'ext '+ext
 	ext=ext[(ext.length-4)..ext.length]
 	ext=".png" if (ext.upcase ==".BMP" or ext.upcase ==".GIF" or ext.upcase ==".PNG") #Texture writer converts BMP,GIF to PNG
 	ext=".tif" if ext.upcase=="TIFF"
 	ext=".jpg" if ext.upcase[0]!=46 # 46 = dot
 	s=name+ext
 	#s=@textures_prefix+@model_name+@os_separator+s
-	s=@textures_prefix+@model_name+"/"+s
-	p "texture name "+s
+	
+	#s=@textures_prefix+@model_name+"/"+s
+	s=@textures_prefix+"/"+s
+	
 	return s
 end
 
