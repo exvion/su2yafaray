@@ -60,6 +60,8 @@ def collect_faces
 	mc=MeshCollector.new(@model_name,@os_separator)
 	mc.collect_faces(Sketchup.active_model.entities, Geom::Transformation.new)
 	@materials=mc.materials
+	p ">>>@materials"
+	p @materials.inspect
 	@fm_materials=mc.fm_materials
 	@model_textures=mc.model_textures
 	@texturewriter=mc.texturewriter
@@ -289,7 +291,8 @@ def write_textures
 		end
 
 		tw=@texturewriter
-		#p @texturewriter
+		p '>>>@model_textures.inspect'
+		p @model_textures.inspect
 		number=@model_textures.length
 		count=1
 		@model_textures.each do |key, value|
@@ -329,7 +332,7 @@ def export_materials(yi)
 	# front_color = Sketchup.active_model.rendering_options["FaceFrontColor"]
 	# scale = 0.8 / 255.0
 	# mat.color = Sketchup::Color.new(front_color.red * scale, front_color.green * scale, front_color.blue * scale)
-
+	
 	materials=Sketchup.active_model.materials
 	materials.each {|mat|
 	export_mat(mat,yi)
@@ -499,6 +502,8 @@ def export_faces(yi)
 			@materials[mat]=nil
 		end}
 	@materials={}
+	@texturewriter=nil
+	@model_textures=nil
 end
 
 # #####################################################################
@@ -528,6 +533,8 @@ def export_face(yi,mat,fm_mat)
 	mat_dir=[]
 	default_mat=[]
 	distorted_uv=[]
+	p '>>>mat'
+	p mat
 	
 	if fm_mat		
 		export=@fm_materials[mat]
@@ -579,25 +586,26 @@ def export_face(yi,mat,fm_mat)
 	#status_bar("Converting Faces to Meshes: " + matname + mat_step + "...[" + current_step.to_s + "/" + total_step.to_s + "]" + " #{rest}")
 	#####
 	
-	for ft in export
+	for face_data in export
 		 
 		 
-		#status_bar("Converting Faces to Meshes: " + matname + mat_step + "...[" + current_step.to_s + "/" + total_step.to_s + "]" + " #{rest}") if (rest%500==0)
+		status_bar("Converting Faces to Meshes: " + matname + mat_step + "...[" + current_step.to_s + "/" + total_step.to_s + "]" + " #{rest}") if (rest%500==0)
 		rest-=1
 		
-	  	polymesh=(ft[3]==true) ? ft[0].mesh(5) : ft[0].mesh(6)
-		trans = ft[1]
+		face, trans, uvHelp, face_mat_dir = face_data
+		
+	  	polymesh=((face_mat_dir==true) ? face.mesh(5) : face.mesh(6))
 		trans_inverse = trans.inverse
-		default_mat.push (ft[0].material==nil)
-		distorted_uv.push ft[2]
-		mat_dir.push ft[3]
+		default_mat.push(face_mat_dir ? face.material==nil:face.back_material==nil)
+		distorted_uv.push(uvHelp)
+		mat_dir.push(face_mat_dir)
 
 		polymesh.transform! trans
 	  
 	 
-		xa = point_to_vector(ft[1].xaxis)
-		ya = point_to_vector(ft[1].yaxis)
-		za = point_to_vector(ft[1].zaxis)
+		xa = point_to_vector(trans.xaxis)
+		ya = point_to_vector(trans.yaxis)
+		za = point_to_vector(trans.zaxis)
 		xy = xa.cross(ya)
 		xz = xa.cross(za)
 		yz = ya.cross(za)
@@ -668,28 +676,27 @@ def export_face(yi,mat,fm_mat)
 			
 			rest -= 1
 
-			dir=(no_texture_uvs) ? true : mat_dir[i]
+			side=(no_texture_uvs) ? true : mat_dir[i]
 
 			for p in (1 .. mesh.count_points)
 				if (default_mat[i] and @model_textures[matname]!=nil)
-					mat_texture=(@model_textures[matname][5]).texture
-					texsize = Geom::Point3d.new(mat_texture.width, mat_texture.height, 1)
+					inherited_texture=(@model_textures[matname][5]).texture
+					texsize = Geom::Point3d.new(inherited_texture.width, inherited_texture.height, 1)
 				else
 					texsize = Geom::Point3d.new(1,1,1)
 				end
 
-				textsize=Geom::Point3d.new(20,20,20) if no_texture_uvs
-
 				if distorted_uv[i]!=nil
-					uvHelp=distorted_uv[i]
-					#UV-Photomatch-Bugfix Stefan Jaensch 2009-08-25 (transformation applied)
-					uv=uvHelp.get_front_UVQ(mesh.point_at(p).transform!(trans_inverse)) if mat_dir[i]==true
-					uv=uvHelp.get_back_UVQ(mesh.point_at(p).transform!(trans_inverse)) if mat_dir[i]==false
+					uvHelper=(export[i][0]).get_UVHelper(side, !side, @texturewriter)
+					point_pos=mesh.point_at(p).transform!(trans.inverse)
+					uvs_original=(side ? uvHelper.get_front_UVQ(point_pos) : uvHelper.get_back_UVQ(point_pos))
 				else
-					uv = [mesh.uv_at(p,dir).x/texsize.x, mesh.uv_at(p,dir).y/texsize.y, mesh.uv_at(p,dir).z/texsize.z]
+					uvs_original=mesh.uv_at(p,side)
 				end
+				uv = [uvs_original.x/texsize.x, uvs_original.y/texsize.y, uvs_original.z/texsize.z]
+
 				#out.print "#{"%.4f" %(uv.x)} #{"%.4f" %(-uv.y+1)}\n"
-				yi.addUV(uv.x,-uv.y+1)
+				yi.addUV(uv.x,uv.y)
 			end
 			i += 1
 		end
@@ -705,9 +712,9 @@ def export_face(yi,mat,fm_mat)
 	  	mirrored_tmp = mirrored[i]
 		mat_dir_tmp = mat_dir[i]
 		for poly in mesh.polygons
-			v1 = (poly[0]>=0?poly[0]:-poly[0])+startindex
-			v2 = (poly[1]>=0?poly[1]:-poly[1])+startindex
-			v3 = (poly[2]>=0?poly[2]:-poly[2])+startindex
+			v1 = (poly[0]>=0 ? poly[0] : -poly[0])+startindex
+			v2 = (poly[1]>=0 ? poly[1] : -poly[1])+startindex
+			v3 = (poly[2]>=0 ? poly[2] : -poly[2])+startindex
 			#p "#{v1-1} #{v2-1} #{v3-1}\n"
 			if !mirrored_tmp
 				if mat_dir_tmp==true

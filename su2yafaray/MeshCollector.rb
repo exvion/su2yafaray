@@ -31,7 +31,7 @@ def collect_faces(object, trans)
 	text="Component: " + object.definition.name if object.class == Sketchup::ComponentInstance
 	text="Group" if object.class == Sketchup::Group
 	
-	#Sketchup.set_status_text "Collecting Faces - Level #{@parent_mat.size} - #{text}"
+	Sketchup.set_status_text "Collecting Faces - Level #{@parent_mat.size} - #{text}"
 
 	for e in entity_list
 	  
