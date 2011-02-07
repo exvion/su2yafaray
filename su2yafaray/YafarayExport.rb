@@ -19,7 +19,9 @@ end
 
 
 def initialize(yi)
-	yi.loadPlugins('')
+	plugins_path=File.join(File.dirname(__FILE__),'bin','plugins')
+	p plugins_path
+	yi.loadPlugins(plugins_path)
 	yi.startScene(0)
 	yi.setInputGamma(1, true)
 end	

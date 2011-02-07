@@ -53,16 +53,17 @@ end
 end
  
 $:.push(File.join(File.dirname(__FILE__)))  #add the su2yafaray folder to the ruby library search list
+$:.push(File.join(File.dirname(__FILE__),'bin'))
 require 'sketchup.rb'
 unless SU2YAFARAY.on_mac?
 	require 'Win32API'
 	require 'registry'
 end
 
- 
- path=SU2YAFARAY.get_yafaray_path_from_registry
+#path=SU2YAFARAY.get_yafaray_path_from_registry
+path=File.join(File.dirname(__FILE__),'bin')
 
- LoadLibrary = Win32API.new("kernel32","LoadLibrary",["P"],"I")
+LoadLibrary = Win32API.new("kernel32","LoadLibrary",["P"],"I")
  
  mingw=false
  if not mingw
