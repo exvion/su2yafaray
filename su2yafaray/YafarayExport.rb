@@ -659,11 +659,17 @@ def export_face(yi,mat,fm_mat)
 	
 
 	# # #Exporting verticies  points
+	i=0
 	for mesh in meshes
+		mat_dir_tmp = mat_dir[i]
 		for p in (1..mesh.count_points)
 			pos = mesh.point_at(p).to_a
 			yi.addVertex(pos[0]*@scale,pos[1]*@scale,pos[2]*@scale)
+			norm = mesh.normal_at(p)
+			norm.reverse! if mat_dir_tmp==false
+			yi.addNormal(norm.x,norm.y,norm.z)
 		end
+	i+=1
 	end
 	
 	
